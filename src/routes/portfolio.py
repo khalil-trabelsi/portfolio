@@ -14,8 +14,6 @@ def index():
     remote_addr = request.remote_addr
     current_app.logger.info(f'{remote_addr}')
     try:
-        print(f'New visitor -: {remote_addr}')
-
         visitor_infos = requests.get(f"https://ipapi.co/{remote_addr}/json/").json()
         current_app.logger.info(f'New visitor -: {visitor_infos}')
         print(f'New visitor -: {visitor_infos}')
