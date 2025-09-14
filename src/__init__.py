@@ -13,9 +13,9 @@ from .routes.portfolio import portfolio_bp
 def create_app(test_config=None):
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_mapping(
-        SECRET_KEY='dev',
-        ADMIN_EMAIL='khaliltrabelsi2107@gmail.com',
-        PASSWORD='admin',
+        SECRET_KEY=os.environ.get('SECRET_KEY', 'DEV'),
+        ADMIN_EMAIL=os.getenv('ADMIN_EMAIL'),
+        PASSWORD=os.getenv('PASSWORD'),
         SQLALCHEMY_DATABASE_URI=os.getenv("DATABASE_URL", "sqlite:///portfolio.db"),
         SQLALCHEMY_TRACK_MODIFICATIONS=False,
     )
