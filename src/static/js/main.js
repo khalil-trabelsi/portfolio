@@ -65,7 +65,11 @@ function openMapPopup(mapId, visitor_description) {
 
     const container = document.getElementById(mapId);
     if (container._leaflet_id) {
+<<<<<<< HEAD
         container._leaflet_id = null;
+=======
+        container._leaflet_id = null; // empêche Leaflet de supprimer le div
+>>>>>>> 6ca595065c3f1656477f3cc02333654d83eb2d1c
     }
 
     const map = L.map(mapId).setView([lat, lng], 13);
