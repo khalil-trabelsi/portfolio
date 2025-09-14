@@ -1,0 +1,59 @@
+# Byte-compiled / cache
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pyc
+
+# Virtual environments
+venv/
+ENV/
+env/
+.venv/
+.pyenv/
+
+# Logs
+*.log
+*.out
+*.err
+
+# SQLite databases & instance folder
+*.sqlite3
+*.db
+instance/
+
+# Coverage / test
+htmlcov/
+.coverage
+coverage.xml
+.cache
+nosetests.xml
+
+# Build and dist
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# Environment / secrets
+.env
+.env.local
+.env.*.local
+
+# IDEs
+.idea/
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# System
+.DS_Store
+Thumbs.db
+
+# Node (if using Tailwind, etc.)
+node_modules/
+
+# Flask-Migrate
+migrations/**/__pycache__/
