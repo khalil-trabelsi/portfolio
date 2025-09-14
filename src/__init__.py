@@ -26,7 +26,7 @@ def init_db():
 
     user = User.query.filter_by(email=admin_email).first()
     if not user:
-        hashed_password = generate_password_hash(password)
+        hashed_password = generate_password_hash(admin_password)
         user = User(username="Khalil TRABELSI", email=admin_email, password=hashed_password)
         db.session.add(user)
         db.session.commit()
