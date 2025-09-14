@@ -13,14 +13,17 @@ portfolio_bp = Blueprint('portfolio', __name__)
 def index():
     remote_addr = request.remote_addr
     current_app.logger.info(f'{remote_addr}')
-    visitor_infos = requests.get(f"https://ipapi.co/{remote_addr}/json/").json()
-    current_app.logger.info(f'New visitor -: {visitor_infos}')
-    print(f'New visitor -: {visitor_infos}')
+    try:
+        visitor_infos = requests.get(f"https://ipapi.co/{remote_addr}/json/").json()
+        current_app.logger.info(f'New visitor -: {visitor_infos}')
+        print(f'New visitor -: {visitor_infos}')
 
-    visitor = Visitor(ip=remote_addr, user_agent=request.headers.get('User-Agent'),
-                      description=json.dumps(visitor_infos))
+        visitor = Visitor(ip=remote_addr, user_agent=request.headers.get('User-Agent'),
+                          description=json.dumps(visitor_infos))
 
-    db.session.add(visitor)
-    db.session.commit()
+        db.session.add(visitor)
+        db.session.commit()
+    except Exception as e:
+        current_app.logger.error(e)
 
     return render_template("portfolio/index.html")
