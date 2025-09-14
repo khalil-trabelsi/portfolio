@@ -1,6 +1,8 @@
 import os
 
+import click
 from flask import Flask
+from flask.cli import with_appcontext
 from werkzeug.security import generate_password_hash
 
 from .extensions import db, migrate, mail
@@ -8,6 +10,29 @@ from .models import User
 from .routes.admin import admin_bp
 from .routes.auth import auth_bp
 from .routes.portfolio import portfolio_bp
+
+
+@click.command('init-db')
+@with_appcontext
+def init_db():
+    db.create_all()
+
+    admin_email = os.environ.get('ADMIN_EMAIL')
+    admin_password = os.getenv('PASSWORD')
+
+    if not admin_email or not admin_password:
+        click.echo("ADMIN_EMAIL et PASSWORD are required")
+        return
+
+    user = User.query.filter_by(email=admin_email).first()
+    if not user:
+        hashed_password = generate_password_hash(password)
+        user = User(username="Khalil TRABELSI", email=admin_email, password=hashed_password)
+        db.session.add(user)
+        db.session.commit()
+        click.echo(f"User {user.username} created successfully")
+    else:
+        click.echo(f"User {user.username} already exists")
 
 
 def create_app(test_config=None):
@@ -39,18 +64,5 @@ def create_app(test_config=None):
     app.register_blueprint(auth_bp)
     app.register_blueprint(admin_bp)
 
-    create_user_if_not_exists(app)
+    app.cli.add_command(init_db)
     return app
-
-
-def create_user_if_not_exists(app: Flask | None):
-    with app.app_context():
-        user = User.query.filter_by(email=app.config["ADMIN_EMAIL"]).first()
-        if not user:
-            hashed_password = generate_password_hash(app.config["PASSWORD"])
-            user = User(username="Khalil TRABELSI", email=app.config["ADMIN_EMAIL"], password=hashed_password)
-            db.session.add(user)
-            db.session.commit()
-            print(f"User {user.username} created successfully")
-        else:
-            print(f"User {user.username} already exists")

@@ -28,6 +28,10 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
+# Initialiser l'utilisateur admin (avec la nouvelle commande CLI)
+echo "Initialisation de l'utilisateur admin..."
+flask init-db
+
 echo "Base de données initialisée avec succès"
 
 # Démarrer l'application
