@@ -13,6 +13,8 @@ portfolio_bp = Blueprint('portfolio', __name__)
 def index():
     remote_addr = request.remote_addr
     current_app.logger.info(f'{remote_addr}')
+    print(request.headers.get('X-Forwarded-For', ''))
+    print(f'remote addr: {remote_addr}')
     try:
         visitor_infos = requests.get(f"https://ipapi.co/{remote_addr}/json/").json()
         current_app.logger.info(f'New visitor -: {visitor_infos}')
