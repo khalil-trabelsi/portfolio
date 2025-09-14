@@ -11,16 +11,16 @@ portfolio_bp = Blueprint('portfolio', __name__)
 
 @portfolio_bp.route('/')
 def index():
-    remote_addr = request.remote_addr
-    current_app.logger.info(f'{remote_addr}')
-    print(request.headers.get('X-Forwarded-For', ''))
-    print(f'remote addr: {remote_addr}')
-    try:
-        visitor_infos = requests.get(f"https://ipapi.co/{remote_addr}/json/").json()
-        current_app.logger.info(f'New visitor -: {visitor_infos}')
-        print(f'New visitor -: {visitor_infos}')
+    x_forwarded_for = request.headers.get('X-Forwarded-For')
+    client_ip = x_forwarded_for[0] if x_forwarded_for else request.remote_addr
+    current_app.logger.debug(f'Visitor ip: {client_ip}')
 
-        visitor = Visitor(ip=remote_addr, user_agent=request.headers.get('User-Agent'),
+    try:
+        visitor_infos = requests.get(f"https://ipapi.co/{client_ip}/json/").json()
+        current_app.logger.debug(f'New visitor -: {visitor_infos}')
+        current_app.logger.debug(f'Visitor - Details -: {visitor_infos}')
+
+        visitor = Visitor(ip=client_ip, user_agent=request.headers.get('User-Agent'),
                           description=json.dumps(visitor_infos))
 
         db.session.add(visitor)
