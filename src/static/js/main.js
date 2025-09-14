@@ -57,27 +57,36 @@ if (yearElt) {
 }
 
 
-function open_map() {
-	const map = L.map('map').setView([51.505, -0.09], 13);
+function openMapPopup(mapId, visitor_description) {
+    console.log("Init map on:", mapId);
 
-	const tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-		maxZoom: 19,
-		attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-	}).addTo(map);
+    const lat = visitor_description['latitude'];
+    const lng = visitor_description['longitude'];
 
-	const marker = L.marker([51.5, -0.09]).addTo(map)
-		.bindPopup('<b>Current position</b><br />').openPopup();
+    const container = document.getElementById(mapId);
+    if (container._leaflet_id) {
+        container._leaflet_id = null;
+    }
 
+    const map = L.map(mapId).setView([lat, lng], 13);
+    window[mapId] = map;
 
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '© OpenStreetMap contributors'
+    }).addTo(map);
 
+    L.marker([lat, lng]).addTo(map)
+        .bindPopup('<b>Current position</b>').openPopup();
 
-
-	function onMapClick(e) {
-		popup
-			.setLatLng(e.latlng)
-			.setContent(`You clicked the map at ${e.latlng.toString()}`)
-			.openOn(map);
-	}
-
-	map.on('click', onMapClick);
+    const popup = L.popup();
+    map.on('click', function (e) {
+        popup
+            .setLatLng(e.latlng)
+            .setContent(`You clicked the map at ${e.latlng.toString()}`)
+            .openOn(map);
+    });
+    setTimeout(() => {
+        map.invalidateSize();
+    }, 300);
 }

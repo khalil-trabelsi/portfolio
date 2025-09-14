@@ -33,8 +33,8 @@ def index():
             "city": visitor_infos.get("city"),
             "region": visitor_infos.get("region"),
             "country": visitor_infos.get("country_name"),
-            "latitude": visitor_infos.get("latitude"),
-            "longitude": visitor_infos.get("longitude")
+            "latitude": visitor_infos.get("latitude", 51.505),
+            "longitude": visitor_infos.get("longitude", -0.09)
         }
         visitor = Visitor(ip=client_ip, user_agent=request.headers.get('User-Agent'),
                           description=json.dumps(visitor_detail))

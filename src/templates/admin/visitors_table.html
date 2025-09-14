@@ -46,13 +46,14 @@
 
 
                             <!-- Modal toggle -->
-                            <a data-modal-target="default-modal" data-modal-toggle="default-modal"
-                               type="button" onclick="open_map()">
+                            <a data-modal-target="modal-{{ loop.index }}" data-modal-toggle="modal-{{ loop.index }}"
+                               type="button"
+                               onclick="openMapPopup('map-{{ loop.index }}', {{ visitor.description }})">
                                 {{ visitor.description }}
                             </a>
 
                             <!-- Main modal -->
-                            <div id="default-modal" tabindex="-1" aria-hidden="true"
+                            <div id="modal-{{ loop.index }}" tabindex="-1" aria-hidden="true"
                                  class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
                                 <div class="relative p-4 w-full max-w-4xl max-h-full">
                                     <!-- Modal content -->
@@ -64,7 +65,7 @@
                                             </h3>
                                             <button type="button"
                                                     class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
-                                                    data-modal-hide="default-modal">
+                                                    data-modal-hide="modal-{{ loop.index }}">
                                                 <svg class="w-3 h-3" aria-hidden="true"
                                                      xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
                                                     <path stroke="currentColor" stroke-linecap="round"
@@ -76,8 +77,8 @@
                                         </div>
                                         <!-- Modal body -->
                                         <div class="p-4 md:p-5 space-y-4">
-                                            <h1>Votre localisation approximative : {{ city }}, {{ country }}</h1>
-                                            <div id="map" style="height: 600px"></div>
+                                            <h1>{{ visitor.description }}</h1>
+                                            <div id="map-{{ loop.index }}" style="height: 600px"></div>
                                         </div>
                                     </div>
                                 </div>
