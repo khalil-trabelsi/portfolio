@@ -16,7 +16,11 @@ def index():
     current_app.logger.debug(f'Visitor ip: {client_ip}')
 
     try:
-        print(x_forwarded_for[0])
+        if x_forwarded_for:
+            print(x_forwarded_for[0])
+            print(x_forwarded_for[1])
+            print(x_forwarded_for[2])
+            print(x_forwarded_for)
         print(client_ip)
         visitor_infos = requests.get(f"https://ipapi.co/{client_ip}/json/").json() if client_ip else "No data"
         current_app.logger.debug(f'New visitor -: {visitor_infos}')
